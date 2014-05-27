@@ -26,6 +26,7 @@ group node['omnibus']['build_user_group'] do
 end
 
 powershell_script do
+  name 'password-policy'
   cwd Chef::Config['file_cache_path']
   code <<-EOH
     secedit /export /cfg local-security.cfg
