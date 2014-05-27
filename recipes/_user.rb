@@ -32,6 +32,7 @@ powershell_script 'password-policy' do
     (Get-Content local-security.cfg) | ForEach-Object {$_ -replace 'PasswordComplexity = 1', 'PasswordComplexity = 0'} | Set-Content local-security.cfg
     secedit /configure /db C:/Windows/security/local.sdb /cfg local-security.cfg /areas SECURITYPOLICY
   EOH
+  user 'Administrator'
   only_if { node['platform_version'].to_f >= 6.3 }
 end
 
