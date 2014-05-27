@@ -25,8 +25,7 @@ group node['omnibus']['build_user_group'] do
   ignore_failure true if windows?
 end
 
-powershell_script do
-  name 'password-policy'
+powershell_script 'password-policy' do
   cwd Chef::Config['file_cache_path']
   code <<-EOH
     secedit /export /cfg local-security.cfg
