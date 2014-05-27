@@ -28,10 +28,10 @@ end
 if node['platform_version'].to_f >= 6.3 do
   powershell_script do
     cwd Chef::Config['file_cache_path']
-    code <<- EOH
+    code <<-EOH
       secedit /export /cfg local-security.cfg
       (Get-Content local-security.cfg) | ForEach-Object {$_ -replace 'PasswordComplexity = 1', 'PasswordComplexity = 0'} | Set-Content local-security.cfg
-      secedit /configure /db C:\\Windows\\security\\local.sdb /cfg local-security.cfg /areas SECURITYPOLICY
+      secedit /configure /db C:/Windows/security/local.sdb /cfg local-security.cfg /areas SECURITYPOLICY
     EOH
   end
 end
