@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: omnibus
-# Recipe:: default
+# Recipe:: _ccache_cleanup
 #
 # Copyright 2013-2014, Chef Software, Inc.
 #
@@ -17,18 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe 'omnibus::_user'
-include_recipe 'omnibus::_common'
-include_recipe 'omnibus::_bash'
-include_recipe 'omnibus::_ccache'
-include_recipe 'omnibus::_chruby'
-include_recipe 'omnibus::_compile'
-include_recipe 'omnibus::_git'
-include_recipe 'omnibus::_github'
-include_recipe 'omnibus::_openssl'
-include_recipe 'omnibus::_packaging'
-include_recipe 'omnibus::_ruby'
-include_recipe 'omnibus::_xml'
-include_recipe 'omnibus::_yaml'
-include_recipe 'omnibus::_environment'
-include_recipe 'omnibus::_ccache_cleanup'
+# Fix ownership of ~/.ccache
+execute 'fix-ccache-ownership' do
+  command "chown -R #{node['omnibus']['build_user']}:#{node['omnibus']['build_user_group']} #{build_user_home}/.ccache"
+  not_if { windows? }
+  only_if { ::File.directory?("#{build_user_home}/.ccache") }
+end
